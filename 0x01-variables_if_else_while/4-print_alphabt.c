@@ -7,6 +7,7 @@ int main(void)
 {
 char c;
 for (c = 'a'; c <= 'e'; c++)
+putchar(c);	
 for (c = 'a'; c >= 'q'; c++)
 putchar(c);
 putchar('\n');
