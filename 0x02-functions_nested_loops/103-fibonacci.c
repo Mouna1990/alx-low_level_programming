@@ -6,15 +6,19 @@
 */
 int main(void)
 {
-int i = 0;
-long j = 1, k = 2, sum = k;
-while (k + j < 4000000)
+int first = 1;
+int second = 2;
+int sum = 0;
+while (first <= 4000000)
 {
-k += j;
-if (k % 2 == 0)
-sum += k;
-++i;
+if (first % 2 == 0)
+{
+sum += first;
 }
-printf("%ld\n", sum);
+int next = first + second;
+first = second;
+second = next;
+}
+printf("Sum of even-valued terms: %d\n", sum);
 return (0);
 }
