@@ -16,7 +16,9 @@ next = k + j;
 k = j;
 j = next;
 if (next % 2 == 0)
+{
 sum += next;
+}
 ++i;
 }
 printf("%d\n", sum);
