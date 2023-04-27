@@ -4,7 +4,7 @@
 /**
 *_isdigit - checks for a digit
 *@c:check cara
-* Return: Always 0.
+* Return: 1 or 0
 */
 int _isdigit(int c)
 {
