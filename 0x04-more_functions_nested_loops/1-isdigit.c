@@ -5,11 +5,14 @@
 *_isdigit - checks for a digit
 *@c:check cara
 * Return: 1 or 0
+*
 */
 int _isdigit(int c)
 {
 if (c == 0 || c != 'a')
 return (1);
+
 else
+
 return (0);
 }
