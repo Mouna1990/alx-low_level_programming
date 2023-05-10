@@ -2,6 +2,7 @@
 #include "main.h"
 /**
 *_puts_recursion - print string "puts with recursion"
+*@s:string
 *return : always 0
 */
 void _puts_recursion(char *s)
