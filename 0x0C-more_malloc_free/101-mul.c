@@ -55,7 +55,7 @@ result[i + j + 1] = sum % 10;
 i = 0;
 while (result[i] == 0 && i < len1 + len2 - 1)
 i++;
-for (;i < len1 + len2; i++)
+for (; i < len1 + len2; i++)
 printf("%d", result[i]);
 printf("\n");
 
