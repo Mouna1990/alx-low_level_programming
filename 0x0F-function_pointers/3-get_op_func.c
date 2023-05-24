@@ -10,19 +10,19 @@
  */
 int (*get_op_func(char *s))(int, int)
 {
-if (s == NULL)
-return (NULL);
+op_t ops[] = {
+{"+", op_add},
+{"-", op_sub},
+{"*", op_mul},
+{"/", op_div},
+{"%", op_mod},
+{NULL, NULL},
+};
 
-if (*s == '+')
-return (op_add);
-else if (*s == '-')
-return (op_sub);
-else if (*s == '*')
-return (op_mul);
-else if (*s == '/')
-return (op_div);
-else if (*s == '%')
-return (op_mod);
-else
-return (NULL);
+int i = 0;
+
+while (ops[i].op != NULL && *(ops[i].op) != *s)
+i++;
+
+return (ops[i].f);
 }
