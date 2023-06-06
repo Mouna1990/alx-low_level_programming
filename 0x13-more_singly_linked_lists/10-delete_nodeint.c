@@ -18,7 +18,7 @@ else
 {
 listint_t *current = *head;
 listint_t *previous = NULL;
-unsigned int i ;
+unsigned int i;
 for (i = 0; current != NULL && i < index; i++)
 {
 previous = current;
