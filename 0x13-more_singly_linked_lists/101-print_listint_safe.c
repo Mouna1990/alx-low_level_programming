@@ -20,15 +20,15 @@ while (slow && fast && fast->next)
 slow = slow->next;
 fast = fast->next->next;
 
+printf("[%p] %d\n", (void *)slow, slow->n);
+
 if (slow == fast)
 {
-printf("-> [%p] %d\n", (void *)slow, slow->n);
-exit(98);
+printf("-> [%p] %d\n", (void *)slow->next, slow->next->n);
+break;
 }
 
-printf("[%p] %d\n", (void *)slow, slow->n);
 count++;
 }
-
 return (count);
 }
