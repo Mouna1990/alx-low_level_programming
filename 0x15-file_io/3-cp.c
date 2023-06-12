@@ -5,15 +5,16 @@
 #include "main.h"
 
 #define BUFFER_SIZE 1024
+
 /**
 * open_file - Opens a file with the specified flags and mode.
 * @filename: Name of the file to open.
 * @flags: Flags to use when opening the file.
 * @mode: Mode to set for the file if it needs to be created.
+*
 * Return: The file descriptor on success.
-* Exits with error code 98 and prints an error message on failure.
+*         Exits with error code 98 and prints an error message on failure.
 */
-
 int open_file(const char *filename, int flags, int mode)
 {
 int fd = open(filename, flags, mode);
@@ -24,14 +25,15 @@ exit(98);
 }
 return (fd);
 }
+
 /**
 * copy_file - Copies the contents of one file to another.
 * @file_from: Name of the source file.
 * @file_to: Name of the destination file.
 * Return: None.
-* Exits with error codes 98, 99, or 100 and prints an error message on failure.
+*Exits with error codes 98, 99, or 100
+*and prints an error message on failure.
 */
-
 void copy_file(const char *file_from, const char *file_to)
 {
 int fd_from, fd_to;
@@ -74,6 +76,7 @@ exit(100);
 * main - Entry point.
 * @argc: Number of arguments.
 * @argv: Array of argument strings.
+*
 * Return: 0 on success, otherwise exit with error codes.
 */
 int main(int argc, char *argv[])
