@@ -4,90 +4,89 @@
 #include <unistd.h>
 #include "main.h"
 
-#define BUFFER_SIZE 1024
+void close_file(int fd);
 
 /**
-* open_file - Opens a file with the specified flags and mode.
-* @filename: Name of the file to open.
-* @flags: Flags to use when opening the file.
-* @mode: Mode to set for the file if it needs to be created.
-*
-* Return: The file descriptor on success.
-*         Exits with error code 98 and prints an error message on failure.
+* close_file - Closes file descriptors.
+* @fd: The file descriptor to be closed.
 */
-int open_file(const char *filename, int flags, int mode)
+void close_file(int fd)
 {
-int fd = open(filename, flags, mode);
-if (fd == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't open file %s\n", filename);
-exit(98);
-}
-return (fd);
-}
+int c;
 
-/**
-* copy_file - Copies the contents of one file to another.
-* @file_from: Name of the source file.
-* @file_to: Name of the destination file.
-* Return: None.
-*Exits with error codes 98, 99, or 100
-*and prints an error message on failure.
-*/
-void copy_file(const char *file_from, const char *file_to)
-{
-int fd_from, fd_to;
-char buffer[BUFFER_SIZE];
-ssize_t bytes_read, bytes_written;
+c = close(fd);
 
-fd_from = open_file(file_from, O_RDONLY, 0);
-fd_to = open_file(file_to, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-
-while ((bytes_read = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+if (c == -1)
 {
-bytes_written = write(fd_to, buffer, bytes_read);
-if (bytes_written != bytes_read || bytes_written == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
-exit(99);
-}
-}
-
-if (bytes_read == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
-exit(98);
-}
-
-if (close(fd_from) == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
-exit(100);
-}
-
-if (close(fd_to) == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
+dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
 exit(100);
 }
 }
 
 /**
-* main - Entry point.
-* @argc: Number of arguments.
-* @argv: Array of argument strings.
+* main - Copies the contents of a file to another file.
+* @argc: The number of arguments supplied to the program.
+* @argv: An array of pointers to the arguments.
 *
-* Return: 0 on success, otherwise exit with error codes.
+* Return: 0 on success.
+*
+* Description: If the argument count is incorrect - exit code 97.
+*              If file_from does not exist or cannot be read - exit code 98.
+*              If file_to cannot be created or written to - exit code 99.
+*              If file_to or file_from cannot be closed - exit code 100.
 */
 int main(int argc, char *argv[])
 {
+int from, to, r, w;
+char buffer[1024];
+
 if (argc != 3)
 {
 dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 exit(97);
 }
 
-copy_file(argv[1], argv[2]);
+from = open(argv[1], O_RDONLY);
+if (from == -1)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't read from file %s\n", argv[1]);
+exit(98);
+}
+
+to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+if (to == -1)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't write to %s\n", argv[2]);
+close_file(from);
+exit(99);
+}
+
+while ((r = read(from, buffer, 1024)) > 0)
+{
+w = write(to, buffer, r);
+if (w == -1)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't write to %s\n", argv[2]);
+close_file(from);
+close_file(to);
+exit(99);
+}
+}
+
+if (r == -1)
+{
+dprintf(STDERR_FILENO,
+"Error: Can't read from file %s\n", argv[1]);
+close_file(from);
+close_file(to);
+exit(98);
+}
+
+close_file(from);
+close_file(to);
 
 return (0);
 }
